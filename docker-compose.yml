@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  genieacs-config-worker:
+    image: marcandres888/genieacs-config-worker:latest
+    container_name: genieacs-config-worker
+    restart: unless-stopped
+    environment:
+      # Kafka Configuration
+      - KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      - KAFKA_INPUT_TOPIC=genieacs_config
+      - KAFKA_SUCCESS_TOPIC=genieacs_configured
+      - KAFKA_ERROR_TOPIC=genieacs_config_error
+      - KAFKA_CONSUMER_GROUP=genieacs-config-worker
+      
+      # GenieACS Configuration
+      - GENIEACS_HOST=10.42.4.3
+      - GENIEACS_USER=onu
+      - GENIEACS_PASSWORD=onu
+      - GENIEACS_SSL=false
+      
+      # Gotify Configuration
+      - GOTIFY_URL=https://gotify.mcandres.com
+      - GOTIFY_TOKEN=AfvvshNxqj6wk59
+      
+      # WiFi TR-069 Paths
+      - WIFI_2G_SSID_PATH=InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.SSID
+      - WIFI_2G_PASSWORD_PATH=InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.KeyPassphrase
+      - WIFI_5G_SSID_PATH=InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.SSID
+      - WIFI_5G_PASSWORD_PATH=InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.KeyPassphrase
+      - ADMIN_PASSWORD_PATH=InternetGatewayDevice.DeviceInfo.X_CT-COM_TeleComAccount.Password
+      # Logging
+      - LOG_LEVEL=INFO
+    
+    networks:
+      - portainer_default
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  portainer_default:
+    external: true
