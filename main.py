@@ -135,17 +135,24 @@ class GenieACSConfigWorker:
             
             # Configure 2.4GHz network
             logger.info("Setting up 2.4GHz network...")
+
+            wifi_2g_password_path = self.wifi_2g_password_path
+            wifi_5g_password_path = self.wifi_5g_password_path
+            if "HKZ28B" in device_id.upper():
+                wifi_2g_password_path = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey"
             self.genieacs_connection.task_set_parameter_values(device_id, [
                 [self.wifi_2g_ssid_path, wifi_ssid],
-                [self.wifi_2g_password_path, wifi_password]
+                [wifi_2g_password_path, wifi_password]
             ])
             logger.info("✅ 2.4GHz configuration task sent")
             
             # Configure 5GHz network
             logger.info("Setting up 5GHz network...")
+            if "HKZ28B" in device_id.upper():
+                wifi_5g_password_path = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.PreSharedKey"
             self.genieacs_connection.task_set_parameter_values(device_id, [
                 [self.wifi_5g_ssid_path, f"{wifi_ssid}-5G"],
-                [self.wifi_5g_password_path, wifi_password]
+                [wifi_5g_password_path, wifi_password]
             ])
             logger.info("✅ 5GHz configuration task sent")
             
@@ -163,8 +170,11 @@ class GenieACSConfigWorker:
             
             # Configure admin password
             logger.info("Setting admin password...")
+            admin_password_path = self.admin_password_path
+            if "HKZ28B" in device_id.upper():
+                admin_password_path = "InternetGatewayDevice.ManagementServer.ConnectionRequestPassword"
             self.genieacs_connection.task_set_parameter_values(device_id, [
-                [self.admin_password_path, admin_password]
+                [admin_password_path, admin_password]
             ])
             logger.info("✅ Admin password configuration task sent")
             
