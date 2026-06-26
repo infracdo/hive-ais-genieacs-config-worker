@@ -137,7 +137,6 @@ class GenieACSConfigWorker:
             logger.info("Setting up 2.4GHz network...")
 
             wifi_2g_password_path = self.wifi_2g_password_path
-            wifi_5g_password_path = self.wifi_5g_password_path
             if "HKZ28B" in device_id.upper():
                 wifi_2g_password_path = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.1.PreSharedKey"
             self.genieacs_connection.task_set_parameter_values(device_id, [
@@ -148,10 +147,13 @@ class GenieACSConfigWorker:
             
             # Configure 5GHz network
             logger.info("Setting up 5GHz network...")
+            ssid_5g = f"{wifi_ssid}-5G"
+            wifi_5g_password_path = self.wifi_5g_password_path
             if "HKZ28B" in device_id.upper():
                 wifi_5g_password_path = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.PreSharedKey"
+                ssid_5g = wifi_ssid
             self.genieacs_connection.task_set_parameter_values(device_id, [
-                [self.wifi_5g_ssid_path, f"{wifi_ssid}-5G"],
+                [self.wifi_5g_ssid_path, ssid_5g],
                 [wifi_5g_password_path, wifi_password]
             ])
             logger.info("✅ 5GHz configuration task sent")
