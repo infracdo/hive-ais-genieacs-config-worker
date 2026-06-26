@@ -151,7 +151,7 @@ class GenieACSConfigWorker:
             wifi_5g_password_path = self.wifi_5g_password_path
             if "HKZ28B" in device_id.upper():
                 wifi_5g_password_path = "InternetGatewayDevice.LANDevice.1.WLANConfiguration.5.PreSharedKey.1.KeyPassphrase"
-                ssid_5g = wifi_ssid
+                ssid_5g = f"{wifi_ssid} 5G"
             self.genieacs_connection.task_set_parameter_values(device_id, [
                 [self.wifi_5g_ssid_path, ssid_5g],
                 [wifi_5g_password_path, wifi_password]
