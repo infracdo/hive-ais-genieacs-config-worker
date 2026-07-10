@@ -174,7 +174,7 @@ class GenieACSConfigWorker:
             logger.info("Setting admin password...")
             admin_password_path = self.admin_password_path
             if "HKZ28B" in device_id.upper():
-                admin_password_path = "InternetGatewayDevice.ManagementServer.ConnectionRequestPassword"
+                admin_password_path = "InternetGatewayDevice.DeviceInfo.X_CMCC_TeleComAccount.Password"
             self.genieacs_connection.task_set_parameter_values(device_id, [
                 [admin_password_path, admin_password]
             ])
